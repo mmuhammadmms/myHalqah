@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PeopleRequest;
 use App\Http\Resources\PeopleResource;
-use App\Models\Mohalla;
 use App\Models\People;
 use Illuminate\Http\Request;
 
@@ -15,10 +15,16 @@ class PeopleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $peoples = People::all();
-        return view('peoples.index',compact('peoples'));
+        if ( $request->search ){
+            $peoples = People::where('mohalla_id' , $request->search)->get();
+        }
+        if ( $request->searchInput ){
+            $peoples = People::where('mohalla_id' , $request->search)->get();
+        }
+        return PeopleResource::collection($peoples);
     }
 
     /**
@@ -28,8 +34,7 @@ class PeopleController extends Controller
      */
     public function create()
     {
-        $mohallas = Mohalla::all();
-        return view('peoples.create',compact('mohallas'));
+        //
     }
 
     /**
@@ -40,9 +45,8 @@ class PeopleController extends Controller
      */
     public function store(PeopleRequest $request)
     {
-        dd('test'); 
         $people = People::create($request->validated());
-        return response()->json($people); 
+        return response()->json($people);
     }
 
     /**
@@ -51,7 +55,7 @@ class PeopleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(PeopleResource $people)
+    public function show(People $people)
     {
         return new PeopleResource($people);
     }
@@ -62,9 +66,9 @@ class PeopleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(People $people)
+    public function edit($id)
     {
-        return response()->json($people);
+        //
     }
 
     /**
@@ -77,7 +81,6 @@ class PeopleController extends Controller
     public function update(PeopleRequest $request, People $people)
     {
         $people->update($request->validated());
-        return redirect()->route('peoples.index')->with('message','People Updated Successfully.');   
     }
 
     /**
@@ -86,8 +89,11 @@ class PeopleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(People $people)
     {
-        //
+        $delete = $people->delete();
+        return response()->json('People Deleted Successfully.');
     }
+
+
 }

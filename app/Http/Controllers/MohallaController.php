@@ -51,7 +51,7 @@ class MohallaController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -89,5 +89,9 @@ class MohallaController extends Controller
     {
         $mohalla->delete();
         return redirect()->route('mohallas.index')->with('message','Mohalla Deleted Successfully.');
+    }
+
+    public function getMohallas(){
+        return response()->json(Mohalla::all());
     }
 }

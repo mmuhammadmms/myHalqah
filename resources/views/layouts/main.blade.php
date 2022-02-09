@@ -57,7 +57,7 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('peoples.index') }}">
+                <a class="nav-link" href="/peoples">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>People</span></a>
             </li>

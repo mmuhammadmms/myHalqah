@@ -28,7 +28,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('peoples',PeopleController::class);
+
 
 Route::resource('states',StateController::class);
 Route::resource('zones',ZoneController::class);
@@ -38,5 +38,5 @@ Route::resource('mohallas',MohallaController::class);
 Route::resource('houses', HouseController::class);
 
 Route::get('{any}', function(){
-    return view('/home');
+    return view('/peoples/index');
 })->where('any' , '.*');
